@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <link rel="stylesheet" href="loginform.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <div class="wrapper">
+        <form name="submit-to-google-sheet">
+            <h1>Login</h1>
+                <div class="input-box">
+                    <input name="username" type="text" placeholder="Username" required>
+                    <i class="bx bxs-user"></i>
+                </div>
+                <div class="input-box">
+                    <input name="password" type="password" placeholder="Password" required>
+                    <i class="bx bxs-lock-alt"></i>
+                </div>
+                <div class="remember-forgot">
+                    <label><input type="checkbox"> Remember Me</label>
+                    <a href="#">Forgot Password</a>
+                </div>
+
+                
+                <button id="login" type="button" class="btn" onclick="submitFormAndRedirect()">Login</button>
+
+                <div class="register-link">
+                    <p>Don't have an account? <a href="#">Register</a></p>
+                </div>
+        </form>
+    </div>  
+
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwdEWvoa80rkjzf4Y_KzwTExNCLR67Z4S2PGYuABBqgj60yx7cGhwbslEDkE3eE-iRb/exec'
+        const form = document.forms['submit-to-google-sheet']
+      
+        form.addEventListener('submit', e => {
+          e.preventDefault()
+          fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+            .then(response => console.log('Success!', response))
+            .catch(error => console.error('Error!', error.message))
+        })
+
+        // Function to submit form data and redirect to index.html
+        function submitFormAndRedirect() {
+            // Submit the form data to Google Sheets script
+            fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+                .then(response => {
+                    console.log('Form submitted to Google Sheets!', response);
+                    // After successful submission, redirect to index.html
+                    window.location.href = 'index.html';
+                })
+                .catch(error => console.error('Error submitting form to Google Sheets:', error.message))
+        }
+    </script>
+</body>
+</html>
